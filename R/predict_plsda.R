@@ -29,18 +29,20 @@ predict.plsda<-function(ObjectPLSDA,newdata,type){
   # New data contrôle de cohérence
   if (class(ObjectPLSDA)=="PLSDA") {
     
-    # tranform characters variables in factor
-    newdata[sapply(newdata, is.character)] <- lapply(newdata[sapply(newdata, is.character)],as.factor)
+      if (missing(newdata) || is.null(newdata)){
+        newdata<-ObjectPLSDA$X
+        }
     
+      
     x<-t(apply(newdata,1,function(x){x-(ObjectPLSDA$Xmeans)}))
     ncx<-ncol(x)
     coef<-ObjectPLSDA$plsda.coef
     
     # PROBABILITES D'APPARTENANCE AUX CLASSES
-    prob<-t(apply((as.matrix(X) %*% coef[-(ncx+1),]),1,function(x){x+coef[ncx+1,]}))
+    y<-t(apply((as.matrix(X) %*% coef[-(ncx+1),]),1,function(x){x+coef[ncx+1,]}))
     
     #ON calculele l'exponentiel normalisé
-    prob<-t(apply(prob,1,function(x){exp(x)/sum(exp(x))}))
+    prob<-t(apply(y,1,function(x){exp(x)/sum(exp(x))}))
    
    
     if (type == "class") {
