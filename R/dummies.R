@@ -5,13 +5,13 @@
 ####                en une matrice de p indicatrices                   ####
 ###########################################################################
 
-# X = Variable à transformer
+# X = Variable Ã  transformer
 dummies<-function(X){
   
   indic <- levels(X)
   # Matrice d'indicatrice
-  dum<-t(sapply(Xp,function(x){ifelse(indic==x,1,0)}))
-  # Renomage des colonnes
+  dum<-t(sapply(X,function(x){ifelse(indic==x,1,0)}))
+  # Renommage des colonnes
   colnames(dum)<-indic
   
   return(as.matrix(dum))
