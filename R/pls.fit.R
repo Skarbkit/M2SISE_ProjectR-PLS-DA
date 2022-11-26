@@ -39,10 +39,67 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
   X = data[,Xcolnames]
   y = data[,ycolname]
   
+  n = nrow(data)
+  p = NbXcol
+  
   # Fit the model 
-  nepals.res = nepals(X, ncomp, center=T, reduce=T)
+  nipals.res = nipals(X, ncomp, center=T, reduce=T)
+  
+  
+  # Attention il faudrait centrer réduire X dans la fit avant le nipals pour avoir 
+  # les bons résultats (donc changer les paramètres d'entrée de la nipals et faire les 
+  # calculs dans la fit)
+  
+  # Initialize x results matrix 
+  x.residuals = X
+  x.loadings = nipals.res$loadings
+  x.scores = nipals.res$scores
+  
+  # x.residuals contient la variance des dimensions prédites qui n'est pas expliqué par le 
+  # modèle pls (nipals pour nous). Les individus avec des résidus relativement large sont 
+  # des anomalies (outliers) qui indique qu'ils ne sont pas bien expliqué par le modèle.
+  
+  for (j in 1:ncomp){ # ncomp pour la matrice residuals
+    for (i in 1:n){
+      x.residuals[i,j] = x.residuals[i,j] - x.scores[i,] %*% x.loadings[j,]
+    }
+  }
+  
+  # r, number of response, 1 in our case where y has only one column
+  r = 1
+  
+  # Initialize y results matrix
+  y.loadings = matrix(0, r, ncomp)
+  y.loadings = t(t(x.scores) %*% y.dm[,1]) # Prend la première colonne pour avoir un cas binaire
+  y.scores = matrix(0, n, ncomp)
+  y.scores = y.dm[,1]%*%y.loadings # Pas certain sur les y.scores, on a une colonne y 0/1 donc la moitié des scores est rempli de 0
+  
+  y.pred = x.scores %*% t(y.loadings) # > 0 égale à 1 donc valeur positive, la pred est ok
+  
+  # x.weights = matrix(0, p, ncomp)
+  # 
+  # for (j in 1:p){
+  #   x.weights[j,] = 
+  # }
   
   # Return 
   
+  #class S3
+  res.PLS <- list("X" = X,
+                   "y" = y.dm[,1],
+                   "x.scores" = x.scores,
+                   "y.scores" = y.scores,
+                   "x.loadings" = x.loadings,
+                   "y.loadings" = y.loadings,
+                   "ynames" = colnames(y),
+                   "Xnames" = Xnames,
+                   "N_comp" = ncomp,
+                  # Faudrait rajouter les poids qui apparemment sont utilisés dans les calculs de 
+                  # la nipals à l'origine
+                  # j'ai besoin des poids de X pour calculer les coeff 
+                  #"coef" = coef,
+  )
+  class(res.PLS) <- "PLSDA"
+  return(res.PLS)
 }
 
