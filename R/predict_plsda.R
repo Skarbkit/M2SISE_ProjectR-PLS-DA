@@ -16,15 +16,13 @@
 #' @details
 #' See examples in help for \code{\link{plsda}} function.
 #'#' @examples
-#' library(plsda)
-#' d <- plsda.split_sample(iris)
-#' model <- plsda(Species~.,d$train)
 #' predict.plsda(model, d$test, type ="class")
 #' predict.plsda(model, d$test, type ="posterior")
 
 
 
-predict.plsda<-function(ObjectPLSDA,newdata,type){
+
+predict.plsda<-function(ObjectPLSDA,newdata,type="class"){
   
   # New data contrôle de cohérence
   if (class(ObjectPLSDA)=="PLSDA") {
@@ -33,22 +31,27 @@ predict.plsda<-function(ObjectPLSDA,newdata,type){
         newdata<-ObjectPLSDA$X
         }
     
-      
-    x<-t(apply(newdata,1,function(x){x-(ObjectPLSDA$Xmeans)}))
+    # RÃ©cupÃ©ration des moyennes
+    means <- colMeans(ObjectPLSDA)
+
+    x<-t(apply(newdata,1,function(x){x-means}))
     ncx<-ncol(x)
     coef<-ObjectPLSDA$plsda.coef
     
-    # PROBABILITES D'APPARTENANCE AUX CLASSES
-    y<-t(apply((as.matrix(X) %*% coef[-(ncx+1),]),1,function(x){x+coef[ncx+1,]}))
     
-    #ON calculele l'exponentiel normalisé
+    # PROBABILITES D'APPARTENANCE AUX CLASSES
+    #On calcule les scores de Y 
+    yscore <- as.matrix(X) %*% coef[-(ncx+1),]
+    y<-t(apply(yscore,1,function(x){x+coef[ncx+1,]}))
+    
+    #ON calculele l'exponentiel normalisé(sofmax)
     prob<-t(apply(y,1,function(x){exp(x)/sum(exp(x))}))
    
    
     if (type == "class") {
       # predicted classes
       l.max=apply(prob,1,which.max)
-      return(sapply(l.max,function(x)ObjectPLSDA$level[x]))
+      return(sapply(l.max,function(x) ObjectPLSDA$level[x]))
     }else if (type == "posterior") {
       return(prob)
     }
