@@ -1,7 +1,31 @@
-# fit 
+### nipalspls.fit.R: Nipals PLS fit algorithm for tall data.
+###
+### Implements an adapted version of the `’algorithme PLS1 NIPALS' described in
+###   Diplôme PostGrade en Statistique - La régression PLS (2004) from 
+###   Séverine Vancolen supervised by Yadolah Dodge
+### 
+###   Ressources included in Methods and formulas for x- 
+###   and y-statistics in Partial Least Squares Regression from support.minitab.com
 
-#library(mixOmics)
-#library(pls)
+
+
+#' @title Nipals PLS (M2 SISE R Project)
+#'
+#' @description Fits a dataset with the Nipals PLS algorithm.
+#'
+#'
+#' @param formula a formula for the PLS regression.  \code{NA}s and \code{Inf}s are
+#' not allowed.
+#' @param data a matrix of observations.  \code{NA}s and \code{Inf}s are not
+#' allowed.
+#' @param ncomp the number of components to be used in the modelling.
+#' @param center logical, If \code{TRUE}, center descriptive variables. 
+#' Default is to perform mean centering.
+#' @param reduce logical.  If \code{TRUE} descriptive variables are reduce.  
+#' Default is to reduce by SD of each variable in the data matrix.
+
+#' @keywords regression univariate
+#' @export
 
 pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
   
