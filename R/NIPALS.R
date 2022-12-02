@@ -11,6 +11,36 @@
 #' delete the rows with missing data or to estimate the missing data.
 
 
+#'@title NIPALS: Non-linear Iterative Partial Least Squares
+#'
+#'@description
+#' NIPALS algorithm
+#'
+#'@details
+#'The function \code{nipals} performs Principal Components Analysis of a data
+#'matrix with no missing values.
+#'
+#'@param Data A numeric matrix or data frame 
+#'@param comps Number of components to be calculated (by default 2)
+#'@param scaled A logical value indicating whether to scale the data
+#'(\code{TRUE} by default).
+#'@return An object of class \code{"nipals"}, basically a list with the
+#'following elements:
+#'
+#'When the analyzed data contain missing values, the help interpretation tools
+#'(e.g. \code{cor.xt, disto, contrib, cos, dmod}) may not be meaningful, that
+#'is to say, some of the results may not be coherent.
+#'@return \item{values}{The pseudo eigenvalues}
+#'@return \item{scores}{The extracted scores (i.e. components)}
+#'@return \item{loadings}{The loadings}
+#'@return \item{cor.xt}{Correlations between the variables and the scores}
+#'@return \item{disto}{Squared distance of the observations to the origin}
+#'@return \item{contrib}{Contributions of the observations (rows)}
+#'@return \item{dmod}{Distance to the Model}
+#'@export
+
+
+
 nipals <- function (X, ncomp = 2, center = T, reduce = F)
 {
   X = as.matrix(X)
@@ -79,6 +109,7 @@ nipals <- function (X, ncomp = 2, center = T, reduce = F)
   eigs = data.frame(values=eigvals, percentage=eig.perc, cumulative=cumsum(eig.perc))
   rownames(eigs) = paste(rep("v",nc), 1:nc, sep="")
   
+  #-# correlation between components and variables #-#
   cor.sco = cor(X, Tm)
   
   #-# Individuals contribution #-#
@@ -89,7 +120,7 @@ nipals <- function (X, ncomp = 2, center = T, reduce = F)
   res = list(values = eigs, 
              scores = Tm, 
              loadings = Ph, 
-             cor.xt = cor.sco, 
+             cor.var = cor.sco, 
              contrib = ConInd 
              )
   
@@ -100,27 +131,3 @@ nipals <- function (X, ncomp = 2, center = T, reduce = F)
 
 
 ##################################################
-
-
-#- test que je supprimerai à la fin -#
-
-res <- nipals(iris[,1:4],ncomp=2)
-summary(res)
-head(res$loadings)
-
-X= iris[,1:4]
-X_c<-apply(X,2,function(x) return(x-mean(x)))
-X_cr<-apply(X,2,function(x) return((x-mean(x))/sd(x)))
-X_cr
-
-
-X = as.matrix(X)
-
-center = T
-reduce = F
-
-
-if(center & reduce){ print('1') 
-    } else if (center & !reduce){ print('2')
-    } else if (!center & reduce){ print('3') 
-    }
