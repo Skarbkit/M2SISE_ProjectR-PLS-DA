@@ -1,14 +1,12 @@
 #' This function performs NIPALS algorithm, i.e. the singular-value
-#' decomposition (SVD) of a data table that can contain missing values.
+#' decomposition (SVD) of a data table.
 #' 
 #' The NIPALS algorithm (Non-linear Iterative Partial Least Squares) has been
 #' developed by H. Wold at first for PCA and later-on for PLS. It is the most
 #' commonly used method for calculating the principal components of a data set.
 #' It gives more numerically accurate results when compared with the SVD of the
 #' covariance matrix, but is slower to calculate.
-#' 
-#' This algorithm allows to realize SVD with missing data, without having to
-#' delete the rows with missing data or to estimate the missing data.
+
 
 
 #'@title NIPALS: Non-linear Iterative Partial Least Squares
@@ -22,8 +20,11 @@
 #'
 #'@param Data A numeric matrix or data frame 
 #'@param comps Number of components to be calculated (by default 2)
-#'@param scaled A logical value indicating whether to scale the data
+#'@param center A logical value indicating whether to center the data
 #'(\code{TRUE} by default).
+#'@param reduce A logical value indicating whether to reduce the data
+#'(\code{FALSE} by default).
+
 #'@return An object of class \code{"nipals"}, basically a list with the
 #'following elements:
 #'
