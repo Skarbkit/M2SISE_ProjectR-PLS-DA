@@ -11,11 +11,11 @@
     -   [Testing the model and predicting-in-app](#testing-the-model-and-predicting-in-app)
     -   [](#)
 -  [Using the package PLSDA](#using-the-package-plsda)
-    -[Installing the package](#installing-the-package)
-    -[Preparing the data](#preparing-the-data)
-    -[Fitting the model](#fitting-the-model)
-    -[Testing the model and predicting](#testing-the-model-and-predicting)
-    -[Determining the VIP](#determining-the-vip)
+    -   [Installing the package](#installing-the-package)
+    -   [Preparing the data](#preparing-the-data)
+    -   [Fitting the model](#fitting-the-model)
+    -   [Testing the model and predicting](#testing-the-model-and-predicting)
+    -   [Determining the VIP](#determining-the-vip)
        
 ### PROJECT DESCRIPTION
 ----------------------
@@ -47,6 +47,13 @@ shiny::runGitHub('M2SISE_ProjectR-PLS-DA', 'Skarbkit', ref='main') #je regardera
 ```
 #### UPLOADING AND VISUALIZING NEW DATA IN APP
 ----------------------------------------
+On the top section of the app you can import a csv file by clicking the "Browse button". You can then choose the separator, the Header and the display (which is shown below)
+<img width="500" alt="Shiny_Upload_data" src="https://i.imgur.com/f6Yoeei.jpg">
+<br/>
+
+#### SPLITTING THE DATA IN APP
+-------------------------------------
+
 
 ### USING THE PACKAGE PLSDA 
 -----------------------------------
@@ -64,7 +71,7 @@ To test the following functions we will use the dataset 'iris' (available in R)
 ```sh
 summary(iris)
 ```
-### PREPARING THE DATA
+#### PREPARING THE DATA
 -------------------------------
 The version of our packages does not accept missing values for now. You need to clean it before using it.
 With the function split_train_test() you can separate your data set into two with a treshold of p.
@@ -77,20 +84,26 @@ summary(data_split)
 <img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
 <br/>
 
-### FITTING THE MODEL
+#### FITTING THE MODEL
 ------------------------------------
 ```sh
 
 ```
+<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
+<br/>
 
-### TESTING THE MODEL AND PREDICTING
+
+#### TESTING THE MODEL AND PREDICTING
 ------------------------------------
 ```sh
 
 ```
-
-### DETERMINING THE VIP
+<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
+<br/>
+#### DETERMINING THE VIP
 ------------------------------------
 ```sh
 
 ```
+<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
+<br/>
