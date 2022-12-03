@@ -111,7 +111,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
   # Return 
   
   #class S3
-  res.PLS <- list("X" = X,
+  res.PLS = list("X" = X,
                   "y" = y.dm[,1], # binaire pour l'instant mais à changer 
                   "x.scores" = x.scores,
                   "y.scores" = y.scores,
