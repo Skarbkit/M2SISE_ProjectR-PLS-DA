@@ -121,7 +121,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
                   "ynames" = colnames(y),
                   "Xnames" = Xnames,
                   "N_comp" = ncomp,
-                  "coef" = coef,
+                  "coefs" = coef,
                   "intercept" = intercept
   )
   class(res.PLS) <- "PLSDA"
