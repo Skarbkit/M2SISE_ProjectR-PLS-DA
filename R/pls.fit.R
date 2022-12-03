@@ -24,7 +24,7 @@
 #' @param reduce logical.  If \code{TRUE} descriptive variables are reduce.  
 #' Default is to reduce by SD of each variable in the data matrix.
 
-#' @keywords regression univariate
+#' @keywords regression multivariate
 #' @export
 
 pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
@@ -78,6 +78,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
   x.residuals = X
   x.loadings = nipals.res$loadings
   x.scores = nipals.res$scores
+  x.weights = nipals.res$contrib
   
   # x.residuals contient la variance des dimensions prédites qui n'est pas expliqué par le 
   # modèle pls (nipals pour nous). Les individus avec des résidus relativement large sont 
@@ -89,8 +90,10 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
     }
   }
   
-  # r, number of response, 1 in our case where y has only one column
+  # r, number of response, 1 in our case, y has only one column
   r = 1
+  
+  y.dm = dummies(y)
   
   # Initialize y results matrix
   y.loadings = matrix(0, r, ncomp)
@@ -100,30 +103,68 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
   
   y.pred = x.scores %*% t(y.loadings) # > 0 égale à 1 donc valeur positive, la pred est ok
   
-  # x.weights = matrix(0, p, ncomp)
-  # 
-  # for (j in 1:p){
-  #   x.weights[j,] = 
-  # }
+  for (i in 1:p){
+    coef[[i]] = sapply(1 : ncomp, function(x){x.weights[, 1:x] %% solve(t(x.loadings[, 1:x]) %% x.weights[, 1:x]) %*% t(y.loadings)[1:x, ]}, simplify = "array")
+  }
+  intercept = sapply(y.dm, mean)
   
   # Return 
   
   #class S3
   res.PLS <- list("X" = X,
-                   "y" = y.dm[,1],
-                   "x.scores" = x.scores,
-                   "y.scores" = y.scores,
-                   "x.loadings" = x.loadings,
-                   "y.loadings" = y.loadings,
-                   "ynames" = colnames(y),
-                   "Xnames" = Xnames,
-                   "N_comp" = ncomp,
-                  # Faudrait rajouter les poids qui apparemment sont utilisés dans les calculs de 
-                  # la nipals à l'origine
-                  # j'ai besoin des poids de X pour calculer les coeff 
-                  #"coef" = coef,
+                  "y" = y.dm[,1], # binaire pour l'instant mais à changer 
+                  "x.scores" = x.scores,
+                  "y.scores" = y.scores,
+                  "x.loadings" = x.loadings,
+                  "y.loadings" = y.loadings,
+                  "x.weights" = x.weights,
+                  "ynames" = colnames(y),
+                  "Xnames" = Xnames,
+                  "N_comp" = ncomp,
+                  "coef" = coef,
+                  "intercept" = intercept
   )
   class(res.PLS) <- "PLSDA"
   return(res.PLS)
 }
 
+
+
+
+# Print PLS
+
+#' print.pls from pls.fit
+#'
+#' @description
+#' Print Coefficients and y.loadings from PLSDA Object
+#'
+#' @param PLSDA a PLSDA object to print
+#'
+#' @export
+#'
+print.pls = function(PLSDA){
+  res = rbind(PLSDA$intercept, PLSDA$coef)
+  y.loadings = PLSDA$y.loadings
+  
+  cat("Coefficients : \n")
+  print(res)
+  print("\n")
+  cat("Y Loadings : \n")
+  print(y.loadings)
+}
+
+# Summary PLS
+
+#' summary.pls from pls.fit
+#'
+#' @description
+#' Summary of a PLSDA Object
+#'
+#' @param PLSDA a PLSDA object to be summarized
+#'
+#' @export
+#'
+
+summary.pls = function(PLSDA){
+  # a compléter
+}
