@@ -11,7 +11,7 @@ library(corrplot)
 library(caret)
 library(stargazer)
 library(shinyWidgets)
-
+source("split_train_test.R")
 dd <- iris
 
 shinyServer(function(input, output, session) {
@@ -109,15 +109,28 @@ shinyServer(function(input, output, session) {
   
   
   InputDataset_model <- reactive({
-    if (is.null(input$SelectX)) {
-      dt <- iris
-    }
-    else{
-      dt <- iris[, c(input$SelectX)]
-    }
-    
+    req(data(),input$xvar,input$yvar)
+   
+   
+    dt <-data()
+   
   })
- 
+  newData=eventReactive(input$Slider1,{
+    req(data(),input$xvar,input$yvar)
+    df=split_train_test(data(), as.character( input$yvar),splitSlider)
+  })
+  
+  #creation train
+  train=reactive({
+    train=newData()$Train
+    return(train)
+  })
+  
+  test=reactive({
+    test=newData()$Test
+    return(test)
+  })
+  
   
 observe({
    lstname <- names(InputDataset())
@@ -162,9 +175,9 @@ observe({
   
   
   output$cntTrain <-
-    renderText(paste("Train Data:", NROW(trainingData()), "records"))
+    renderText(paste("Train Data:", train(), "records"))
   output$cntTest <-
-    renderText(paste("Test Data:", NROW(testData()), "records"))
+    renderText(paste("Test Data:", test(), "records"))
   
   output$Data <- renderDT(InputDataset())
   
