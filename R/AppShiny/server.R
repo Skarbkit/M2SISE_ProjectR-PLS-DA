@@ -14,6 +14,7 @@ library(shinyWidgets)
 source("split_train_test1.R")
 source("pls_fit.R")
 source("predict_plsda.R")
+source("graphs.R")
 dd <- iris
 
 shinyServer(function(input, output, session) {
@@ -125,15 +126,15 @@ shinyServer(function(input, output, session) {
   output$Summ <-
     renderPrint(
       stargazer(
-        InputDataset(),
+        data(),
         type = "text",
         title = "Descriptive statistics",
         digits = 1,
         out = "table1.txt"
       )
     )
-  output$Summ_old <- renderPrint(summary(InputDataset()))
-  output$structure <- renderPrint(str(InputDataset()))
+  output$Summ_old <- renderPrint(summary(data()))
+  output$structure <- renderPrint(str(data()))
   
 
   
@@ -145,7 +146,7 @@ shinyServer(function(input, output, session) {
   output$cntTest <-
     renderText(paste("Test Data:", dim(test())[1], "records"))
   
-  output$Data <- renderDT(InputDataset())
+  output$Data <- renderDT(data())
   
   
   cormat <- reactive({
@@ -213,11 +214,18 @@ shinyServer(function(input, output, session) {
   }) 
   
   
+  #Plots
+  graphs <- eventReactive(input$ip,{
+    graph=individuals_plot(resFit(),Axe1=input$comp1,Axe2=input$comp2)
+  
+  })
+  #show graph 
+  output$Comp <- renderPlotly({
+    graphs()
+    
+  })
   
   
-  
-  
-
 })
 
 

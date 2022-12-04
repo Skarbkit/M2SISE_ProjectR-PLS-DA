@@ -160,11 +160,17 @@ dashboardPage(
         ),
         
        
-        
+        #Graphics
         tabPanel("Plots",
-                 box(withSpinner(plotOutput(
-                   "Corr"
-                 )), width = 12)),
+                 numericInput("comp1","composant 1",value="1",min="1"),
+                 numericInput("comp2","composant 2",value="2",min="1"),
+                 actionButton("ip","individuals plot"),
+                 
+                 
+                 box(tabsetPanel(
+                   tabPanel(plotlyOutput("Comp"))), width = 12
+                )
+                ),
         
         #Show fit 
         tabPanel(
