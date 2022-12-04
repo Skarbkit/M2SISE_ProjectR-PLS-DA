@@ -12,6 +12,7 @@ library(caret)
 library(stargazer)
 library(shinyWidgets)
 source("split_train_test1.R")
+source("pls_fit.R")
 dd <- iris
 
 shinyServer(function(input, output, session) {
@@ -175,7 +176,24 @@ shinyServer(function(input, output, session) {
   
   #Code section for Pls Regression-----------------------------------------------------------------------------
   
- 
+  resFit=eventReactive(input$fit,{
+    req(data(),input$xvar,input$yvar)
+    formul=as.formula(paste(input$yvar,"~",".",sep=" "))
+    if(is.null(input$xvar)){
+      newtrain=train()
+    }else{
+      newtrain=train()[,c(input$xvar,input$yvar)]
+    }
+    res=pls.fit(formula=formul,data=newtrain,ncomp=as.numeric(input$ncomp))
+    return(res)
+  })
   
+  output$showFit=renderTable({
+    req(resFit())
+    resFit()$coefs
+         }) 
+  
+
 })
+
 

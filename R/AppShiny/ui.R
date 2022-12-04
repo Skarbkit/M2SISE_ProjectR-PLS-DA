@@ -38,7 +38,7 @@ dashboardPage(
     
     br(),
     
-   # Options to center and reduce the data
+    # Options to center and reduce the data
     h3("Scalling the X variables "),
     checkboxInput("center", "Center all X variables", TRUE),
     checkboxInput("reduce", "Reduce all X variables", FALSE),
@@ -91,10 +91,11 @@ dashboardPage(
                                                   All = "all"),
                                       selected = "head"
                                       
-                         )#,
+                         )
                          
                          
                          # mainPanel(tableOutput("contents"))
+                        
                        )
                      )
               )
@@ -115,7 +116,7 @@ dashboardPage(
         title = "Choose the X variables"
       ),
       box(
-        #selectInput("SelectY", label = "Select variable to predict:", choices = names(mtcars))
+       
         uiOutput("yvariable"),
         solidHeader = TRUE,
         width = "3",
@@ -126,13 +127,16 @@ dashboardPage(
       box(
         numericInput(
           "ncomp",
-          "ncomp",
-          2,
-          min = 2,
-          max = 6,
-          step = 1,
-          width = NULL
+          label="ncomp",
+          value="2",
+          min = "2",
+          max = "6"
+          #step = 1,
+          #width = NULL
         ),
+       
+        
+        
         solidHeader = TRUE,
         width = "3",
         status = "primary",
@@ -165,14 +169,7 @@ dashboardPage(
           box(withSpinner(verbatimTextOutput("Summ_old")), width = 6)
         ),
         
-        # 
-        # tabPanel("Data Strucure",
-        #          # box(
-        #          #   withSpinner(verbatimTextOutput("structure")), width = "100%"
-        #          # ),
-        #          explorerOutput("digest")
-        #          ),
-        
+       
         
         tabPanel("Plots",
                  box(withSpinner(plotOutput(
@@ -181,10 +178,10 @@ dashboardPage(
         #box(withSpinner(verbatimTextOutput("CorrMatrix")), width = 12),
         tabPanel(
           "Fit",
-          box(
-            withSpinner(verbatimTextOutput("Model")),
-            width = 6,
-            title = "Model Summary"
+          actionButton("fit","Fit the Data"),
+         box(#mainPanel(tableOutput("showFit")),width = 6,
+             textOutput("showFit"),
+            title = "Coefficients"
           ),
           # box(
           #   withSpinner(verbatimTextOutput("Model_new")),
@@ -192,11 +189,7 @@ dashboardPage(
           #   title = "Model Summary"
           # ),
           # 
-          box(
-            withSpinner(verbatimTextOutput("ImpVar")),
-            width = 5,
-            title = "Variable Importance"
-          )
+         
         ),
         #textOutput("correlation_accuracy"),
         tabPanel(
