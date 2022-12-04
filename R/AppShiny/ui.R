@@ -20,7 +20,7 @@ dashboardPage(
   dashboardHeader(title = "PLS SISE", dropdownMenuOutput("msgOutput")),
   
   dashboardSidebar(
-   
+    
     
     
     sliderInput(
@@ -32,27 +32,36 @@ dashboardPage(
     ),
     textOutput("cntTrain"),
     textOutput("cntTest"),
-   
-  
+    
+    
     
     
     br(),
     
-    #
-     menuItem(
-       "Generate Report",
-       tabName = "sectors",
-       icon = icon("download"),
-       radioButtons(
-         'format',
-         'Document format',
-         c('HTML', 'Word'),
-         inline = FALSE,
-         selected = 1
-       ),
-       downloadButton("report", "Download Report", class = "butt"),
-       tags$head(tags$style(".butt{color: blue !important;}"))
+   # Options to center and reduce the data
+    h3("Scalling the X variables "),
+    checkboxInput("center", "Center all X variables", TRUE),
+    checkboxInput("reduce", "Reduce all X variables", FALSE),
+    
+    br(),
+    
+    
+    # Download the results
+    menuItem(
+      "Generate Report",
+      tabName = "sectors",
+      icon = icon("download"),
+      radioButtons(
+        'format',
+        'Document format',
+        c('HTML', 'Word'),
+        inline = FALSE,
+        selected = 1
+      ),
+      downloadButton("report", "Download Report", class = "butt"),
+      tags$head(tags$style(".butt{color: blue !important;}"))
     )
+    
     
   ),
   dashboardBody(
@@ -62,7 +71,7 @@ dashboardPage(
               column(width = 4,
                      fluidRow(
                        inputPanel(
-                         fileInput("file1", "Choose CSV File",
+                         fileInput("file1", "Choose CSV File to fit the PLS Model",
                                    multiple = FALSE,
                                    accept = c("text/csv",
                                               "text/comma-separated-values,text/plain",
@@ -81,105 +90,121 @@ dashboardPage(
                                       choices = c(Head = "head",
                                                   All = "all"),
                                       selected = "head"
+                                      
+                         )#,
                          
-                       )#,
                          
-                         
-                        # mainPanel(tableOutput("contents"))
+                         # mainPanel(tableOutput("contents"))
                        )
                      )
               )
       ),
       
-     
-     
+      
+      
       
       
       br(),
       
-    box(
-      
-      uiOutput("xvariable")
-      
-      ,
-      solidHeader = TRUE,
-      width = "3",
-      status = "primary",
-      title = "X variable"
-    ),
-    box(
-      #selectInput("SelectY", label = "Select variable to predict:", choices = names(mtcars))
-      uiOutput("yvariable"),
-      solidHeader = TRUE,
-      width = "3",
-      status = "primary",
-      title = "Y variable"
-    )
-    
-    
-    
-  ),
-  
-  fluidPage(  
-    
-      tabBox(
-      id = "tabset1",
-      height = "1000px",
-      width = 12,
-      
-      
-  
-     tabPanel("DataFile",
-        box(mainPanel(tableOutput("contents")), width = 12)),
-      
-      tabPanel("Data Iris",
-               box(withSpinner(DTOutput(
-                 "Data"
-               )), width = 12)),
-      tabPanel(
-        "Data Summary Iris",
-        box(withSpinner(verbatimTextOutput("Summ")), width = 6),
-        box(withSpinner(verbatimTextOutput("Summ_old")), width = 6)
+      box(
+        
+        uiOutput("xvariable"),
+        solidHeader = TRUE,
+        width = "3",
+        status = "primary",
+        title = "Choose the X variables"
+      ),
+      box(
+        #selectInput("SelectY", label = "Select variable to predict:", choices = names(mtcars))
+        uiOutput("yvariable"),
+        solidHeader = TRUE,
+        width = "3",
+        status = "primary",
+        title = "Chose the Y variable"
       ),
       
-      # 
-      # tabPanel("Data Strucure",
-      #          # box(
-      #          #   withSpinner(verbatimTextOutput("structure")), width = "100%"
-      #          # ),
-      #          explorerOutput("digest")
-      #          ),
-      tabPanel("Plots",
-               box(withSpinner(plotOutput(
-                 "Corr"
-               )), width = 12)),
-      #box(withSpinner(verbatimTextOutput("CorrMatrix")), width = 12),
-      tabPanel(
-        "Fit",
-        box(
-          withSpinner(verbatimTextOutput("Model")),
-          width = 6,
-          title = "Model Summary"
+      box(
+        numericInput(
+          "ncomp",
+          "ncomp",
+          2,
+          min = 2,
+          max = 6,
+          step = 1,
+          width = NULL
         ),
-        # box(
-        #   withSpinner(verbatimTextOutput("Model_new")),
-        #   width = 6,
-        #   title = "Model Summary"
-        # ),
-        # 
-        box(
-          withSpinner(verbatimTextOutput("ImpVar")),
-          width = 5,
-          title = "Variable Importance"
-        )
+        solidHeader = TRUE,
+        width = "3",
+        status = "primary",
+        title = "Choose the number of components for the PLS"
       ),
-      #textOutput("correlation_accuracy"),
-      tabPanel(
-        "Prediction",
-        box(withSpinner(plotOutput("Prediction")), width = 6, title = "Best Fit Line"),
-        box(withSpinner(plotOutput("residualPlots")), width = 6, title = "Diagnostic Plots")
+      
+      
+      
+    ),
+    
+    fluidPage(  
+      
+      tabBox(
+        id = "tabset1",
+        height = "1000px",
+        width = 12,
+        
+        
+        
+        tabPanel("DataFile",
+                 box(mainPanel(tableOutput("contents")), width = 12)),
+        
+        tabPanel("Data Iris",
+                 box(withSpinner(DTOutput(
+                   "Data"
+                 )), width = 12)),
+        tabPanel(
+          "Data Summary",
+          box(withSpinner(verbatimTextOutput("Summ")), width = 6),
+          box(withSpinner(verbatimTextOutput("Summ_old")), width = 6)
+        ),
+        
+        # 
+        # tabPanel("Data Strucure",
+        #          # box(
+        #          #   withSpinner(verbatimTextOutput("structure")), width = "100%"
+        #          # ),
+        #          explorerOutput("digest")
+        #          ),
+        
+        
+        tabPanel("Plots",
+                 box(withSpinner(plotOutput(
+                   "Corr"
+                 )), width = 12)),
+        #box(withSpinner(verbatimTextOutput("CorrMatrix")), width = 12),
+        tabPanel(
+          "Fit",
+          box(
+            withSpinner(verbatimTextOutput("Model")),
+            width = 6,
+            title = "Model Summary"
+          ),
+          # box(
+          #   withSpinner(verbatimTextOutput("Model_new")),
+          #   width = 6,
+          #   title = "Model Summary"
+          # ),
+          # 
+          box(
+            withSpinner(verbatimTextOutput("ImpVar")),
+            width = 5,
+            title = "Variable Importance"
+          )
+        ),
+        #textOutput("correlation_accuracy"),
+        tabPanel(
+          "Prediction",
+          box(withSpinner(plotOutput("Prediction")), width = 6, title = "Best Fit Line"),
+          box(withSpinner(plotOutput("residualPlots")), width = 6, title = "Diagnostic Plots")
+        )
       )
     )
-  )
   )
 )
