@@ -24,6 +24,19 @@
 #' Default is to perform mean centering.
 #' @param reduce logical.  If \code{TRUE} descriptive variables are reduce.  
 #' Default is to reduce by SD of each variable in the data matrix.
+#' #'@return \item{X}{X dataset}
+#'@return \item{y}{y dataset}
+#'@return \item{x.scores}{X scores}
+#'@return \item{y.scores}{Y scores}
+#'@return \item{x.loadings}{X loadings}
+#'@return \item{y.loadings}{Y loadings}
+#'@return \item{x.weights}{X weigths}
+#'@return \item{x.residuals}{X residuals}
+#'@return \item{ynames}{levels of y}
+#'@return \item{Xnames}{Colnames of X dataset}
+#'@return \item{Ncomp}{Number of components of our PLS}
+#'@return \item{coef}{Coefficients for prediction}
+#' 
 #' 
 #' @example 
 #' 
@@ -34,7 +47,7 @@
 #' @keywords regression multivariate
 #' @export
 
-pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
+pls.fit <- function(formula, data, ncomp=2, center=T, reduce=T){
   
   # Check input values 
   
