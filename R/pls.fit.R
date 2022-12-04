@@ -69,11 +69,25 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
   X = data[,Xcolnames]
   y = as.factor(data[,ycolname])
   
+  y.dm = dummies(y)
+  
+  
+  if(center & reduce){ 
+    X <- apply(X,2,function(x) return((x-mean(x))/sd(x))) 
+    y.dm <- apply(y.dm,2,function(x) return((x-mean(x))/sd(x))) 
+  } else if (center & !reduce){ 
+    X <- apply(X,2,function(x) return(x-mean(x)))
+    y.dm <- apply(y.dm,2,function(x) return(x-mean(x)))
+  } else if (!center & reduce){ 
+    X <- apply(X,2,function(x) return(x/sd(x))) 
+    y.dm <- apply(y.dm,2,function(x) return(x/sd(x))) 
+  }
+  
   n = nrow(data)
   p = NbXcol
   
   # Fit the model 
-  nipals.res = nipals(X, ncomp, center=center, reduce=reduce)
+  nipals.res = nipals(X, ncomp)
   
   # Initialize x results matrix 
   x.residuals = X
@@ -93,9 +107,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
   # r, number of response on the class
   r = nlevels(y)
   
-  # dummification of y
-  y.dm = dummies(y)
-  
+
   # Initialize y results matrix
   y.loadings = matrix(0, r, ncomp)
   y.scores = matrix(0, n, ncomp)
