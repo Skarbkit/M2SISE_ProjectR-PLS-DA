@@ -36,6 +36,8 @@ From statistics4u.com :
 
 ### USING THE PACKAGE PLSDA 
 -----------------------------------
+#### INSTALLING THE PACKAGE
+---------------------------
 To install the package you need to download it from GitHub
 ```sh
 library(devtools)
@@ -73,19 +75,8 @@ summary(model)
 <img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
 <br/>
 
-pls.fit() uses functions dummies() and nipals() when creating the model. Both are available in the package to use separately
+pls.fit() uses function dummies() when creating the model.
 
-```sh
-dummies(iris$Species)
-```
-<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
-<br/>
-
-```sh
-nipals(X = iris[,1:4], ncopmp = 2 , center = TRUE , reduce = FALSE)
-```
-<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
-<br/>
 
 
 
@@ -94,8 +85,7 @@ nipals(X = iris[,1:4], ncopmp = 2 , center = TRUE , reduce = FALSE)
 ```sh
 predict.plsda(ObjectPLSDA = model1 , newdata = , type="class") #A COMPLETER
 ```
-<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
-<br/>
+
 
 #### DETERMINING THE VIP
 ------------------------------------
@@ -104,15 +94,21 @@ predict.plsda(ObjectPLSDA = model1 , newdata = , type="class") #A COMPLETER
 plsda.vip(objectPLSDA = model1 , treshold = 0.8 ) 
 ```
 
-<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
-<br/>
 
 #### GRAPHICS OPTIONS
 ------------------------------------
  The package comes with graphics functions.
 ```sh
- 
+ individuals_plot(res.pls, Axe1 = 1, Axe2 = 2) 
 ```
+<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/9dBe4Cp.jpg">
+<br/>
+
+```sh
+plsda_scree_plot(res.pls) 
+```
+<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/B8mYjcD.jpg">
+<br/>
 
 #### HELP
 -----------------------------------------
