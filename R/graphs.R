@@ -29,7 +29,7 @@ individuals_plot <- function(PLSDA, Axe1 = 1, Axe2 = 2){
   # Get the number of component choosed in the pls fit
   n_comp = PLSDA$N_comp
   
-  if(Axe1 > n_comp | Axe_2 > n_comp){
+  if(Axe1 > n_comp | Axe2 > n_comp){
     
     print("La valeur de l'axe est supérieure au nombre de composants")
   }else 
