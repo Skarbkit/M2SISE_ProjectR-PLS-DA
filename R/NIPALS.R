@@ -20,10 +20,7 @@
 #'
 #'@param Data A numeric matrix or data frame 
 #'@param comps Number of components to be calculated (by default 2)
-#'@param center A logical value indicating whether to center the data
-#'(\code{TRUE} by default).
-#'@param reduce A logical value indicating whether to reduce the data
-#'(\code{FALSE} by default).
+
 
 #'@return An object of class \code{"nipals"}, basically a list with the
 #'following elements:
@@ -42,7 +39,7 @@
 
 
 
-nipals <- function (X, ncomp = 2, center = T, reduce = F)
+nipals <- function (X, ncomp = 2)
 {
   X = as.matrix(X)
   #-# Checklist to see if the function can run #-#
@@ -54,12 +51,6 @@ nipals <- function (X, ncomp = 2, center = T, reduce = F)
     stop("Some rows or columns are void", 
          "Function can't run properly", call)
 
-  #-# Function center reduce -#
-  if(center & reduce){ X <- apply(X,2,function(x) return((x-mean(x))/sd(x))) 
-  } else if (center & !reduce){ X <- apply(X,2,function(x) return(x-mean(x)))
-  } else if (!center & reduce){ X <- apply(X,2,function(x) return(x/sd(x))) 
-  }
-  
   
   #-# Preparation objects #-#
   n = nrow(X)
