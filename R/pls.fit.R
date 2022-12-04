@@ -125,7 +125,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
   
   #class S3
   res.PLS = list("X" = X,
-                  "y" = y.dm, # binaire pour l'instant mais à changer 
+                  "y" = y, 
                   "x.scores" = x.scores,
                   "y.scores" = y.scores,
                   "x.loadings" = x.loadings,
@@ -135,7 +135,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
                   "ynames" = levels(y),
                   "Xnames" = Xcolnames,
                   "N_comp" = ncomp,
-                  "coefs" = coefs
+                  "coef" = coefs
   )
   class(res.PLS) <- "PLSDA"
   return(res.PLS)
@@ -182,5 +182,46 @@ print.pls = function(PLSDA){
 #'
 
 summary.pls = function(PLSDA){
+  X = PLSDA$X
+  
+  # X summary
+  
+  cat("\n")
+  cat("Summary for descriptives variables : \n")
+  cat("\n")
+  print(summary(X))
+  
+  # Correlation
+  cat("\n")
+  cat("Correlation between descriptives variables : \n")
+  cat("\n")
+  print(cor(X))
+  
+  # Y summary
+  Y = PLSDA$y
+  cat("\n")
+  cat("Summary for target variable : \n")
+  cat("\n")
+  print(summary(Y))
+  
+  # Ncomp
+  ncomp = PLSDA$N_comp
+  
+  cat("\n")
+  cat("Number of components : \n")
+  cat("\n")
+  print(ncomp)
+  
+  # Coef
+  Coef = PLSDA$coef
 
+  cat("\n")
+  cat("Coefficients : \n")
+  cat("\n")
+  print(Coef)
+  
+  
+  
+
+  
 }
