@@ -12,6 +12,8 @@ library(caret)
 library(stargazer)
 library(shinyWidgets)
 source("split_train_test1.R")
+source("pls_fit.R")
+source("predict_plsda.R")
 dd <- iris
 
 shinyServer(function(input, output, session) {
@@ -119,17 +121,7 @@ shinyServer(function(input, output, session) {
     return(test)
   })
   
-  
-#observe({
- #  lstname <- names(InputDataset())
-  # updateSelectInput(session = session,
-   #                   inputId = "SelectY",
-    #                  choices = lstname)
-  #})
-  
- # splitSlider <- reactive({
-  #  input$Slider1 / 100
-  #})
+
   output$Summ <-
     renderPrint(
       stargazer(
@@ -143,12 +135,7 @@ shinyServer(function(input, output, session) {
   output$Summ_old <- renderPrint(summary(InputDataset()))
   output$structure <- renderPrint(str(InputDataset()))
   
-  set.seed(100)  # setting seed to reproduce results of random sampling
-  trainingRowIndex <-
-    reactive({
-      sample(1:nrow(InputDataset_model()),
-             splitSlider() * nrow(InputDataset_model()))
-    })# row indices for training data
+
   
 
   
@@ -175,7 +162,62 @@ shinyServer(function(input, output, session) {
   
   #Code section for Pls Regression-----------------------------------------------------------------------------
   
- 
+  #call function FIT
+  formul <- reactive({
+    as.formula(paste(input$yvar,"~",".",sep=" "))
+  })
   
+  resFit=eventReactive(input$fit,{
+   req(data(),train(),input$xvar,input$yvar)
+    
+   
+    if(is.null(input$xvar)){
+      newtrain=train()
+    }else{
+      
+      newtrain=train()[,c(input$xvar,input$yvar)]
+     
+      
+    }
+    res=pls.fit(formula=formul(),data=as.data.frame(newtrain),ncomp=input$ncomp)
+    return(res)
+  })
+  
+  
+
+  output$Fit=renderTable({
+    
+    resFit()$coef
+   
+         }) 
+  
+  #call function Predict
+  resPred=eventReactive(input$pred,{
+    if(is.null(input$xvar)){
+      n=which(colnames(test())==input$yvar) #remove selected y 
+      newtest=test()[,-n]
+    }else{
+      newtest=test()[,input$xvar] 
+    }
+    respred=predict.plsda(resFit(),newtest)
+    return(respred)
+    
+  })
+  
+  
+  #Result Predict
+  output$Pred=renderTable({
+    
+    resPred()
+    
+  }) 
+  
+  
+  
+  
+  
+  
+
 })
+
 

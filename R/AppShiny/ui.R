@@ -38,7 +38,7 @@ dashboardPage(
     
     br(),
     
-   # Options to center and reduce the data
+    # Options to center and reduce the data
     h3("Scalling the X variables "),
     checkboxInput("center", "Center all X variables", TRUE),
     checkboxInput("reduce", "Reduce all X variables", FALSE),
@@ -91,23 +91,14 @@ dashboardPage(
                                                   All = "all"),
                                       selected = "head"
                                       
-                         )#,
-                         
-                         
-                         # mainPanel(tableOutput("contents"))
-                       )
-                     )
-              )
-      ),
-      
-      
-      
-      
+                         ))
+                       ))
+              ),
       
       br(),
       
       box(
-        
+        # box choose X
         uiOutput("xvariable"),
         solidHeader = TRUE,
         width = "3",
@@ -115,7 +106,7 @@ dashboardPage(
         title = "Choose the X variables"
       ),
       box(
-        #selectInput("SelectY", label = "Select variable to predict:", choices = names(mtcars))
+        # box choose Y
         uiOutput("yvariable"),
         solidHeader = TRUE,
         width = "3",
@@ -126,13 +117,15 @@ dashboardPage(
       box(
         numericInput(
           "ncomp",
-          "ncomp",
-          2,
-          min = 2,
-          max = 6,
-          step = 1,
-          width = NULL
+          label="ncomp",
+          value="2",
+          min = "2",
+          max = "6"
+        
         ),
+       
+        
+        
         solidHeader = TRUE,
         width = "3",
         status = "primary",
@@ -152,9 +145,10 @@ dashboardPage(
         
         
         
+        #output Data
         tabPanel("DataFile",
                  box(mainPanel(tableOutput("contents")), width = 12)),
-        
+        #Exemple Data Iris
         tabPanel("Data Iris",
                  box(withSpinner(DTOutput(
                    "Data"
@@ -165,45 +159,29 @@ dashboardPage(
           box(withSpinner(verbatimTextOutput("Summ_old")), width = 6)
         ),
         
-        # 
-        # tabPanel("Data Strucure",
-        #          # box(
-        #          #   withSpinner(verbatimTextOutput("structure")), width = "100%"
-        #          # ),
-        #          explorerOutput("digest")
-        #          ),
-        
+       
         
         tabPanel("Plots",
                  box(withSpinner(plotOutput(
                    "Corr"
                  )), width = 12)),
-        #box(withSpinner(verbatimTextOutput("CorrMatrix")), width = 12),
+        
+        #Show fit 
         tabPanel(
           "Fit",
-          box(
-            withSpinner(verbatimTextOutput("Model")),
-            width = 6,
-            title = "Model Summary"
+          actionButton("fit","Fit the Data"),
+         
+         box(mainPanel(tableOutput("Fit")),width = 6,
+             
+            title = "Coefficients"
           ),
-          # box(
-          #   withSpinner(verbatimTextOutput("Model_new")),
-          #   width = 6,
-          #   title = "Model Summary"
-          # ),
-          # 
-          box(
-            withSpinner(verbatimTextOutput("ImpVar")),
-            width = 5,
-            title = "Variable Importance"
-          )
         ),
-        #textOutput("correlation_accuracy"),
+        #Show Predict
         tabPanel(
           "Prediction",
-          box(withSpinner(plotOutput("Prediction")), width = 6, title = "Best Fit Line"),
-          box(withSpinner(plotOutput("residualPlots")), width = 6, title = "Diagnostic Plots")
-        )
+          box(mainPanel(tableOutput("Pred")),width = 6,title = "Summary"),
+        actionButton("pred","Predict the Data")
+          )
       )
     )
   )
