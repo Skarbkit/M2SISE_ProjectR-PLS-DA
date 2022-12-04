@@ -4,12 +4,6 @@
 -   [Project Description](#project-description)
     -   [PLSDA Definition](#plsda-definition)
     -   [NIPALS Algorithm](#nipals-algorithm)
--  [Navigating the Shiny App](#navigating-the-shiny-app)
-    -   [Uploading and visualizing new data](#uploading-and-visualizing-new-data-in-app)
-    -   [Splitting the data in app](#splitting-the-data-in-app)
-    -   [Fitting the model-in-app](#fitting-the-model-in-app)
-    -   [Testing the model and predicting-in-app](#testing-the-model-and-predicting-in-app)
-    -   [](#)
 -  [Using the package PLSDA](#using-the-package-plsda)
     -   [Installing the package](#installing-the-package)
     -   [Preparing the data](#preparing-the-data)
@@ -18,6 +12,9 @@
     -   [Determining the VIP](#determining-the-vip)
     -   [Graphics Options](#graphics-options)
     -   [Help](#help)
+-  [Navigating the Shiny App](#navigating-the-shiny-app)
+    
+
        
 ### PROJECT DESCRIPTION
 ----------------------
@@ -35,26 +32,6 @@ From the mixOmics website we find the following definition :
 From statistics4u.com : 
 "The NIPALS Algorithm ("Nonlinear Iterative vartial Least Squares") has been developed by H. Wold at first for PCA and later-on for PLS. It is the most commonly used method for calculating the principal components of a data set. It gives more numerically accurate results when compared with the SVD of the covariance matrix, but is slower to calculate."
 
-### NAVIGATING THE SHINY APP
------------------------------
-
-The following tutorial is also available in video form here : // Si on fait une vidéo //
-
-To connect to the Shiny App, enter Rstudio and type these lines
-```sh
-install.packages("shiny")
-install.packages("shinydashboard")
-library(shiny)
-shiny::runGitHub('M2SISE_ProjectR-PLS-DA', 'Skarbkit', ref='main') #je regarderai après pourquoi ça fonctionne pas
-```
-#### UPLOADING AND VISUALIZING NEW DATA IN APP
-----------------------------------------
-On the top section of the app you can import a csv file by clicking the "Browse button". You can then choose the separator, the Header and the display (which is shown below)
-<img width="500" alt="Shiny_Upload_data" src="https://i.imgur.com/f6Yoeei.jpg">
-<br/>
-
-#### SPLITTING THE DATA IN APP
--------------------------------------
 
 
 ### USING THE PACKAGE PLSDA 
@@ -142,3 +119,8 @@ plsda.vip(objectPLSDA = model1 , treshold = 0.8 )
 Don't forget to use the command help(<function>) to open a help window for each function.
 
 
+### NAVIGATING THE SHINY APP
+-----------------------------
+
+The tutorial to maneuver the app can be found in video form here :  
+The app is hosted here :
