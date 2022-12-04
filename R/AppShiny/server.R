@@ -83,20 +83,6 @@ shinyServer(function(input, output, session) {
   
   
   
-  #lmModel <- reactive({
-   # req(data(),input$xvar,input$yvar)
-    #x <- as.numeric(data()[[as.name(input$xvar)]])
-    #y <- as.numeric(data()[[as.name(input$yvar)]])
-    #if (length(x) == length(y)){
-    #  model <- lm(x ~ y, data = data(), na.action=na.exclude)
-   # }else model <- NULL
-   # return(model)
-  #})
-  
-  
-  
-  
-  
   
   
   
@@ -122,7 +108,7 @@ shinyServer(function(input, output, session) {
     df=split_train_test(data(),(input$Slider1/100))
   })
   
-  #creation train
+  #creation train and test
   train=reactive({
     train=newData()$Train
     return(train)
@@ -134,16 +120,16 @@ shinyServer(function(input, output, session) {
   })
   
   
-observe({
-   lstname <- names(InputDataset())
-   updateSelectInput(session = session,
-                      inputId = "SelectY",
-                      choices = lstname)
-  })
+#observe({
+ #  lstname <- names(InputDataset())
+  # updateSelectInput(session = session,
+   #                   inputId = "SelectY",
+    #                  choices = lstname)
+  #})
   
-  splitSlider <- reactive({
-    input$Slider1 / 100
-  })
+ # splitSlider <- reactive({
+  #  input$Slider1 / 100
+  #})
   output$Summ <-
     renderPrint(
       stargazer(
@@ -164,16 +150,7 @@ observe({
              splitSlider() * nrow(InputDataset_model()))
     })# row indices for training data
   
-  trainingData <- reactive({
-    tmptraindt <- InputDataset_model()
-    tmptraindt[trainingRowIndex(), ]
-  })
-  
-  testData <- reactive({
-    tmptestdt <- InputDataset_model()
-    tmptestdt[-trainingRowIndex(),]
-  })
-  
+
   
   
   output$cntTrain <-
@@ -196,7 +173,7 @@ observe({
     ))
   
   
-  #Code section for Linear Regression-----------------------------------------------------------------------------
+  #Code section for Pls Regression-----------------------------------------------------------------------------
   
  
   
