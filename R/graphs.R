@@ -1,62 +1,9 @@
-#res <- nipals(iris[,1:4],ncomp=2)
-#summary(res)
-#head(res$loadings)
 
 library(ggplot2)
 library(tidyverse)
 library(ggforce)
 library(plotly)
 
-#### Scatter Plot reduction dimension avec NIPALS #####
-#X <- res$scores
-#Y <- iris[,5]
-
-#data <- data.frame(x1=X[,1], x2=X[,2], y=Y)
-#data$y <- factor(data$y)
-#ggplot(data, aes(x=x1, y=x2, color=y)) +
-#  geom_point() +
-#  xlab("dimension 1") +
- # ylab("dimension 2") +
-#  ggtitle("Clusters") +
-#  geom_mark_ellipse(aes(color = y), expand = unit(0.5,"mm"))
-
-### Cercle correlation  ###
-
-#loadings <-data.frame(res$loadings)
-#ggplot(loadings, aes(x=p1, y=p2)) +
-#  geom_point() +
-#  xlim(-1, 1) +
-#  ylim(-1, 1)
-
-
-circle.plot <- function(PLSDA){
-  ## Plot circle of correlations between variables
-  # get correlations
-  cor_tx = PLSDA$x.loadings[,1]
-  cor_ty = PLSDA$x.loadings[,2]
-  X=PLSDA$X
-  cor1=res$cor_tx*sqrt(eigen(cor(scale(res$X)))$values[1])
-  cor2=res$cor_ty*sqrt(eigen(cor(scale(res$X)))$values[2])
-  
-  
-  # points for generating circle
-  z = seq(0, 2*pi, l=100)
-  # open plot
-  plot(cos(z), sin(z), type="l", 
-       main=expression(bold("Circle of Correlations on  ") * bold(list(t[1],t[2]))), 
-       ylim=c(-1.1,1.1), xlim=c(-1.2,1.2),
-       xlab=expression("PLS-component  " * t[1]), 
-       ylab=expression("PLS-component  " * t[2]), 
-       cex.main=1, cex.axis=.8, col="grey")
-  # adding lines
-  abline(h=seq(-1,1,.25), v=seq(-1,1,.25), col="grey", lty=3)
-  abline(h=0, v=0, col="grey", lwd=2)
-  # variables
-  points(cor1[,1], cor1[,2], pch=20, col=rep("blue",nrow(cor1)))
-  text(cor1[,1], cor1[,2], labels=rownames(cor1), pos=2, 
-       col=rep("blue",nrow(cor1)), cex=.8)
-  
-}
 
 
 #' PLOT Individuals
@@ -102,3 +49,41 @@ individuals_plot <- function(PLSDA, Axe1 = 1, Axe2 = 2){
     return(ind)
   }
 }
+
+#' scree plot
+#'
+#' @description 
+#' Show scree plot
+#'
+#' @param PLSDA 
+#' an object PLSDA
+#' @returns 
+#'  scree plot for PLSDA
+#' @export
+#'
+
+plsda_scree_plot=function(PLSDA){
+  
+  
+  library(plotly)
+  
+  # Correlations 
+  X=PLSDA$X
+  corX=cor(X)
+  ncomp=ncol(PLSDA$X)
+  
+  
+  # The eigenvalues
+  eigenvalues=eigen(corX)$values
+  test=eigenvalues > 1
+  cols <- ifelse(test, "rgba(139, 0, 0, 0.3)", "rgba(0, 0, 255, 0.3)")
+  lab=1:ncomp
+  #  plot
+  plot_ly(x=lab, y = eigenvalues,type = "bar",color = I(cols))%>%
+    layout(
+      xaxis=list(title="Components"),
+      yaxis=list(title="Eigenvalues"),
+      title="Selection of components"
+    )
+}
+
