@@ -67,7 +67,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
   if(!ycolname%in%colnames(data)){stop("Error : Target column in formula doesn't match with colnames in the data !")}
   
   X = data[,Xcolnames]
-  y = data[,ycolname]
+  y = as.factor(data[,ycolname])
   
   n = nrow(data)
   p = NbXcol
@@ -219,9 +219,4 @@ summary.pls = function(PLSDA){
   cat("Coefficients : \n")
   cat("\n")
   print(Coef)
-  
-  
-  
-
-  
 }
