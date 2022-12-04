@@ -1,4 +1,18 @@
-# Stratified Split on train/test datasets based on caret package
+### .
+
+#' @title Split Train Test (M2 SISE R Project)
+#'
+#' @description Split a data set in a train set and a test set.
+#'
+#'
+#' @param data a dataset you want to be split.
+#' @param p the threshold to split the data.
+
+#' @example 
+#' 
+#' new_df = split_train_test(iris)
+
+#' @export
 
 split_train_test<-function(data,p=0.67){
   
