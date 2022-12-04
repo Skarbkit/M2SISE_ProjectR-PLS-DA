@@ -104,7 +104,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
     y.loadings[i,] = t(t(x.scores) %*% y.dm[,i])
     
   }
-  y.scores = y.dm[,1]%*%y.loadings
+  #y.scores = y.dm[,1]%*%y.loadings
    # Prend la première colonne pour avoir un cas binaire
   # for (i in 1:r){
   #   y.scores[,i] = y.dm%*%y.loadings[,i]
@@ -129,7 +129,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
   
   #class S3
   res.PLS = list("X" = X,
-                  "y" = y.dm[,1], # binaire pour l'instant mais à changer 
+                  "y" = y.dm, # binaire pour l'instant mais à changer 
                   "x.scores" = x.scores,
                   "y.scores" = y.scores,
                   "x.loadings" = x.loadings,
@@ -138,7 +138,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
                   "ynames" = colnames(y),
                   "Xnames" = Xnames,
                   "N_comp" = ncomp,
-                  "coefs" = coefs,
+                  "coefs" = coefs
   )
   class(res.PLS) <- "PLSDA"
   return(res.PLS)
