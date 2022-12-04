@@ -16,6 +16,8 @@
     -   [Fitting the model](#fitting-the-model)
     -   [Testing the model and predicting](#testing-the-model-and-predicting)
     -   [Determining the VIP](#determining-the-vip)
+    -   [Graphics Options](#graphics-options)
+    -   [Help](#help)
        
 ### PROJECT DESCRIPTION
 ----------------------
@@ -87,23 +89,56 @@ summary(data_split)
 #### FITTING THE MODEL
 ------------------------------------
 ```sh
-
+model1 <- pls.fit(formula = Species ~ . , data = iris , ncomp = 2 , center = TRUE , reduce = FALSE )
+print(model)
+summary(model)
 ```
 <img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
 <br/>
+
+pls.fit() uses functions dummies() and nipals() when creating the model. Both are available in the package to use separately
+
+```sh
+dummies(iris$Species)
+```
+<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
+<br/>
+
+```sh
+nipals(X = iris[,1:4], ncopmp = 2 , center = TRUE , reduce = FALSE)
+```
+<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
+<br/>
+
 
 
 #### TESTING THE MODEL AND PREDICTING
 ------------------------------------
 ```sh
-
+predict.plsda(ObjectPLSDA = model1 , newdata = , type="class") #A COMPLETER
 ```
 <img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
 <br/>
+
 #### DETERMINING THE VIP
 ------------------------------------
-```sh
 
+```sh
+plsda.vip(objectPLSDA = model1 , treshold = 0.8 ) 
 ```
+
 <img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
 <br/>
+
+#### GRAPHICS OPTIONS
+------------------------------------
+ The package comes with graphics functions.
+```sh
+ 
+```
+
+#### HELP
+-----------------------------------------
+Don't forget to use the command help(<function>) to open a help window for each function.
+
+
