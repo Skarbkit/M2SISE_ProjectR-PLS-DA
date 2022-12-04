@@ -167,11 +167,12 @@ dashboardPage(
                  actionButton("ip","individuals plot"),
                  
                  
-                 box(tabsetPanel(
-                   tabPanel(plotlyOutput("Comp"))), width = 12
+                 box(
+                   tabsetPanel(
+                   tabPanel(plotlyOutput("Comp")), tabPanel(plotlyOutput("scree"))),width = 12
                 )
                 ),
-        
+       
         #Show fit 
         tabPanel(
           "Fit",

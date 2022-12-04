@@ -214,14 +214,26 @@ shinyServer(function(input, output, session) {
   }) 
   
   
-  #Plots
-  graphs <- eventReactive(input$ip,{
+  #Plots individuals_plot
+  ind_plot <- eventReactive(input$ip,{
     graph=individuals_plot(resFit(),Axe1=input$comp1,Axe2=input$comp2)
   
   })
   #show graph 
   output$Comp <- renderPlotly({
-    graphs()
+    ind_plot()
+    
+  })
+  
+  
+  #Plots Selection of components
+  scree_plot <- eventReactive(input$ip,{
+    graph1=plsda_scree_plot(resFit())
+    
+  })
+  #show graph 
+  output$scree <- renderPlotly({
+    scree_plot()
     
   })
   
