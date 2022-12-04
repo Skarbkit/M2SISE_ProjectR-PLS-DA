@@ -136,7 +136,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
                   "y.loadings" = y.loadings,
                   "x.weights" = x.weights,
                   "ynames" = colnames(y),
-                  "Xnames" = Xnames,
+                  "Xnames" = Xcolnames,
                   "N_comp" = ncomp,
                   "coefs" = coefs
   )
