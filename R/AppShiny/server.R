@@ -11,7 +11,7 @@ library(corrplot)
 library(caret)
 library(stargazer)
 library(shinyWidgets)
-source("split_train_test.R")
+source("split_train_test1.R")
 dd <- iris
 
 shinyServer(function(input, output, session) {
@@ -57,23 +57,25 @@ shinyServer(function(input, output, session) {
   
   
   output$xvariable <- renderUI({
+    
     req(data())
-    xa<-colnames(data()) 
-    pickerInput(inputId = 'xvar',
-                label = 'Select X variable',
-                
-                choices = c(xa[1:length(xa)]), selected=xa[1],
-                options = list(`style` = "btn-info"),
-                multiple = TRUE)
+    xa<-colnames(data())
+    selectInput(inputId = "xvar",
+                label = "Select X variable",
+                choices = xa,
+                multiple=TRUE)
+   
     
   })
   output$yvariable <- renderUI({
     req(data())
-    ya<-colnames(data()) 
-    pickerInput(inputId = 'yvar',
-                label = 'Select Y variable',
-                choices = c(ya[1:length(ya)]), selected=ya[2],
-                options = list(`style` = "btn-info"))
+    
+    ya<-colnames(data())
+   
+    selectInput(inputId = "yvar",
+                label = "Select Y variable",
+                choices = ya,
+                multiple=FALSE)
     
   })
   
@@ -117,7 +119,7 @@ shinyServer(function(input, output, session) {
   })
   newData=eventReactive(input$Slider1,{
     req(data(),input$xvar,input$yvar)
-    df=split_train_test(data(), as.character( input$yvar),splitSlider)
+    df=split_train_test(data(),(input$Slider1/100))
   })
   
   #creation train
@@ -175,9 +177,9 @@ observe({
   
   
   output$cntTrain <-
-    renderText(paste("Train Data:", train(), "records"))
+    renderText(paste("Train Data:", dim(train())[1], "records"))
   output$cntTest <-
-    renderText(paste("Test Data:", test(), "records"))
+    renderText(paste("Test Data:", dim(test())[1], "records"))
   
   output$Data <- renderDT(InputDataset())
   
