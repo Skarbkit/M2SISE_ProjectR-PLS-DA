@@ -56,7 +56,7 @@ plsda.vip<-function(objectPLSDA,threshold=0.8){
   
   #df with only vip
   df_var <- as.data.frame(objectPLSDA$X)
-  df_var <- df_var[,colnames(x) %in% res]
+  df_var <- df_var[,colnames(x) %in% varnames]
   
   
   object <- list("newX"=df_var,
