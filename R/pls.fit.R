@@ -67,7 +67,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
   p = NbXcol
   
   # Fit the model 
-  nipals.res = nipals(X, ncomp, center=T, reduce=T)
+  nipals.res = nipals(X, ncomp, center=center, reduce=reduce)
   
   
   # Attention il faudrait centrer réduire X dans la fit avant le nipals pour avoir 
@@ -90,24 +90,41 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
     }
   }
   
-  # r, number of response, 1 in our case, y has only one column
-  r = 1
+  # r, number of response on the class
+  r = nlevels(y)
   
   y.dm = dummies(y)
   
   # Initialize y results matrix
   y.loadings = matrix(0, r, ncomp)
-  y.loadings = t(t(x.scores) %*% y.dm[,1]) # Prend la première colonne pour avoir un cas binaire
   y.scores = matrix(0, n, ncomp)
-  y.scores = y.dm[,1]%*%y.loadings # Pas certain sur les y.scores, on a une colonne y 0/1 donc la moitié des scores est rempli de 0
   
-  y.pred = x.scores %*% t(y.loadings) # > 0 égale à 1 donc valeur positive, la pred est ok
   
-  for (i in 1:p){
-    coef[[i]] = sapply(1 : ncomp, function(x){x.weights[, 1:x] %% solve(t(x.loadings[, 1:x]) %% x.weights[, 1:x]) %*% t(y.loadings)[1:x, ]}, simplify = "array")
+  for (i in 1:r){
+    y.loadings[i,] = t(t(x.scores) %*% y.dm[,i])
+    
   }
-  intercept = sapply(y.dm, mean)
+  y.scores = y.dm[,1]%*%y.loadings
+   # Prend la première colonne pour avoir un cas binaire
+  # for (i in 1:r){
+  #   y.scores[,i] = y.dm%*%y.loadings[,i]
+  # }
+   # Pas certain sur les y.scores, on a une colonne y 0/1 donc la moitié des scores est rempli de 0
   
+  #y.pred = x.scores %*% t(y.loadings) # > 0 égale à 1 donc valeur positive, la pred est ok
+  
+
+  # Coefficients values
+  df_pls <- data.frame(nipals.res$scores,y)
+  lo<-nnet::multinom(y~.,df_pls,trace=F)
+  
+  # Gets coefficients from multinomial log-linear 
+  coefs = data.frame(coef(lo))
+  
+  # Add first class coefficients with empty values
+  coefs = rbind(rep(0, ncol(coefs)), coefs)
+  row.names(coefs)[rownames(coefs) == "1"] = levels(y)[1]
+
   # Return 
   
   #class S3
@@ -121,8 +138,7 @@ pls.fit <- function(formula, data, ncomp=2, center=T, reduce=F){
                   "ynames" = colnames(y),
                   "Xnames" = Xnames,
                   "N_comp" = ncomp,
-                  "coefs" = coef,
-                  "intercept" = intercept
+                  "coefs" = coefs,
   )
   class(res.PLS) <- "PLSDA"
   return(res.PLS)
