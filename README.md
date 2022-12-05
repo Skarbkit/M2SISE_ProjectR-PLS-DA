@@ -106,5 +106,5 @@ Don't forget to use the command help(<function>) to open a help window for each 
 ### NAVIGATING THE SHINY APP
 -----------------------------
 
-The tutorial to maneuver the app can be found in video form here :  
+The tutorial to maneuver the app can be found in video form here :  [Video currently being uploaded]
 The app is hosted here : https://aeutarici.shinyapps.io/appshiny/
