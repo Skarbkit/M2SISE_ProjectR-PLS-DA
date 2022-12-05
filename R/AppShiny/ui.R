@@ -183,11 +183,13 @@ dashboardPage(
             title = "Coefficients"
           ),
         ),
+     
         #Show Predict
         tabPanel(
           "Prediction",
-          box(mainPanel(tableOutput("Pred")),width = 6,title = "Summary"),
-        actionButton("pred","Predict the Data")
+          actionButton("pd","Predict the Data"),
+          box(mainPanel(tableOutput("Pred")),width = 6,title = "Matrix")
+       
           )
       )
     )

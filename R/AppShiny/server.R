@@ -12,8 +12,8 @@ library(caret)
 library(stargazer)
 library(shinyWidgets)
 source("split_train_test1.R")
-source("pls_fit.R")
-source("predict_plsda.R")
+source("plsda.fit.R")
+source("predict.plsda.R")
 source("graphs.R")
 dd <- iris
 
@@ -180,7 +180,8 @@ shinyServer(function(input, output, session) {
      
       
     }
-    res=pls.fit(formula=formul(),data=as.data.frame(newtrain),ncomp=input$ncomp)
+    res=plsda.fit(formula=formul(),data=newtrain,ncomp=input$ncomp)
+    sum=summary.pls(res)
     return(res)
   })
   
@@ -188,15 +189,18 @@ shinyServer(function(input, output, session) {
 
   output$Fit=renderTable({
     
-    resFit()$coef
+    resFit()$classement
    
-         }) 
+         },rownames=TRUE) 
   
+
   #call function Predict
-  resPred=eventReactive(input$pred,{
+  resPred=eventReactive(input$pd,{
+    req(resFit(),test(),input$xvar,input$yvar)
     if(is.null(input$xvar)){
-      n=which(colnames(test())==input$yvar) #remove selected y 
-      newtest=test()[,-n]
+      
+      y=which(colnames(test())==input$yvar) #remove  y 
+      newtest=test()[,-y]
     }else{
       newtest=test()[,input$xvar] 
     }
