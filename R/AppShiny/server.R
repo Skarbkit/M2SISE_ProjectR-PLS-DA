@@ -15,6 +15,7 @@ source("split_train_test1.R")
 source("plsda.fit.R")
 source("predict.plsda.R")
 source("graphs.R")
+source('dummies.R')
 dd <- iris
 
 shinyServer(function(input, output, session) {
@@ -35,7 +36,8 @@ shinyServer(function(input, output, session) {
       {
         df <- read.csv(input$file1$datapath,
                        header = input$header,
-                       sep = input$sep
+                       sep = input$sep,
+                       quote = input$qt
         )
       },
       error = function(e) {
@@ -55,7 +57,8 @@ shinyServer(function(input, output, session) {
   })
  
   
-  output$contents <- renderTable({data()
+  output$contents <- renderTable({
+    data()
   })
   
   

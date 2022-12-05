@@ -85,6 +85,11 @@ dashboardPage(
                                                   Semicolon = ";",
                                                   Tab = "\t"),
                                       selected = ","),
+                         radioButtons("qt", "Quote",
+                                      choices = c(None = "",
+                                                  "Double Quote" = '"',
+                                                  "Single Quote" = "'"),
+                                      selected = '"',inline=T),
                          # Input: Select number of rows to display ----
                          radioButtons("disp", "Display",
                                       choices = c(Head = "head",
