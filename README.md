@@ -107,4 +107,4 @@ Don't forget to use the command help(<function>) to open a help window for each 
 -----------------------------
 
 The tutorial to maneuver the app can be found in video form here :  
-The app is hosted here :
+The app is hosted here : https://aeutarici.shinyapps.io/appshiny/
