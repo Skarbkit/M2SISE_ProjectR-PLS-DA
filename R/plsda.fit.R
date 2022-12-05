@@ -175,6 +175,10 @@ plsda.fit <- function(formula, data, ncomp=2, center=T, reduce=T){
   rownames(coefs)=Xcolnames
   colnames(coefs)=ymod
   
+  
+  classement = rbind(coefs, intercept)
+  classnames = append(Xcolnames, "constant")
+  rownames(classement)=classnames
   # Return 
   
   #class S3
@@ -189,7 +193,9 @@ plsda.fit <- function(formula, data, ncomp=2, center=T, reduce=T){
                  "Xnames" = Xcolnames,
                  "N_comp" = ncomp,
                  "coef" = coefs,
-                 "intercept" = intercept
+                 "intercept" = intercept,
+                 "classement"= classement,
+                 "y_dummies"= y.dm
   )
   class(res.PLS) <- "PLSDA"
   return(res.PLS)
