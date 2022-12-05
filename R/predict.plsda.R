@@ -34,12 +34,12 @@ predict.plsda<-function(ObjectPLSDA,newdata,type="class"){
     means <- colMeans(ObjectPLSDA$X)
     
     # Center reduce dataset
-    X <- t(newdata) - means/apply(ObjectPLSDA$X,2,sd)
+    X <- (t(newdata) - means)/apply(ObjectPLSDA$X,2,sd)
     
-    y.pred <- t(X)%*%ObjectPLSDA$coef+ObjectPLSDA$intercept
+    y.pred <- t(X)%*%ObjectPLSDA$coef + ObjectPLSDA$intercept
     
     #softmax
-    y.pred <- apply(y.pred,1,function(x){exp(x)/sum(exp(x))})
+    y.pred <- t(apply(y.pred,1,function(x){exp(x)/sum(exp(x))}))
     
     
     if (type == "class") {
