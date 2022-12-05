@@ -58,42 +58,30 @@ The version of our packages does not accept missing values for now. You need to 
 With the function split_train_test() you can separate your data set into two with a treshold of p.
 
 ```sh
-data_split <- split_train_test(data = iris, class=c("Species"),p=0.67) 
-summary(data_split)
+new_df <- split_train_test(data = iris,p=0.7) 
+summary(new_df)
 ```
 
-<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
+<img width="900" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/udlDKMd.jpg">
 <br/>
 
 #### FITTING THE MODEL
 ------------------------------------
 ```sh
-model1 <- pls.fit(formula = Species ~ . , data = iris , ncomp = 2 , center = TRUE , reduce = FALSE )
-print(model)
-summary(model)
+model1 <- plsda.fit(formula = Species ~ . , data = new_df$df_train , ncomp = 2 , center = TRUE , reduce = FALSE )
+summary(model1)
 ```
-<img width="700" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/8hGZQsK.jpg">
+<img width="900" alt="Capture d’écran 2021-11-29 à 15 59 47" src="https://i.imgur.com/F4CXWjy.jpg">
 <br/>
 
 pls.fit() uses function dummies() when creating the model.
 
 
-
-
 #### TESTING THE MODEL AND PREDICTING
 ------------------------------------
 ```sh
-predict.plsda(ObjectPLSDA = model1 , newdata = , type="class") #A COMPLETER
+pred <- predict.plsda(model1,new_df$df_test[,1:4],type="posterior")
 ```
-
-
-#### DETERMINING THE VIP
-------------------------------------
-
-```sh
-plsda.vip(objectPLSDA = model1 , treshold = 0.8 ) 
-```
-
 
 #### GRAPHICS OPTIONS
 ------------------------------------
