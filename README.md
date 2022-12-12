@@ -46,7 +46,7 @@ install_github('Skarbkit/SISE_ProjectR_PLSDA', subdir='/PackagePLSDA')
 
 Then when it is successfully installed, you need to load it
 ```sh
-library(PLSDA)
+library(PackagePLSDA)
 ```
 To test the following functions we will use the dataset 'iris' (available in R)
 ```sh
