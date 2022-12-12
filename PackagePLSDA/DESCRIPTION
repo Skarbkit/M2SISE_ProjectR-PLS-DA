@@ -10,7 +10,8 @@ Imports:
   plyr,
   dplyr,
   corrplot,
-  ggforce
+  ggforce,
+  plotly
 License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.2.2
