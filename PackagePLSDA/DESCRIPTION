@@ -1,4 +1,4 @@
-Package: plslda
+Package: PackagePLSDA
 Type: Package
 Title: Partial Least Square Discriminant Analysis
 Version: 0.1.0
@@ -9,7 +9,8 @@ Imports:
   ggplot2,
   plyr,
   dplyr,
-  corrplot
+  corrplot,
+  ggforce
 License: GPL-3
 Encoding: UTF-8
 RoxygenNote: 7.2.2
