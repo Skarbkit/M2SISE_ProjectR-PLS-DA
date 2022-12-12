@@ -41,7 +41,7 @@ From statistics4u.com :
 To install the package you need to download it from GitHub
 ```sh
 library(devtools)
-install_github("Skarbkit/PLSDA")
+install_github('Skarbkit/SISE_ProjectR_PLSDA', subdir='/PackagePLSDA')
 ```
 
 Then when it is successfully installed, you need to load it
