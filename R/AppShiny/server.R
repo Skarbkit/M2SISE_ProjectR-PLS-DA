@@ -183,7 +183,7 @@ shinyServer(function(input, output, session) {
      
       
     }
-    res=plsda.fit(formula=formul(),data=newtrain,ncomp=input$ncomp)
+    res=plsda.fit(formula=formul(),data=newtrain,ncomp=input$ncomp,center = input$center,reduce = input$reduce)
     sum=summary.pls(res)
     return(res)
   })
